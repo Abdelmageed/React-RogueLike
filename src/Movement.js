@@ -1,6 +1,6 @@
 import { move } from './Actions'
 import store from './index'
-import { TILE_SIZE, HERO_SPEED } from './World'
+import { HERO_SPEED } from './World'
 
 const input = {
   'arrowup': 'up', 'w': 'up',
@@ -49,19 +49,19 @@ function handleInput () {
     Object.getOwnPropertyNames(directions).forEach ((direction)=> {
         switch (directions[direction]) {
             case 'up': {
-                positionDelta.y += TILE_SIZE
+                positionDelta.y++
                 break
             }
             case 'down': {
-                positionDelta.y -= TILE_SIZE
+                positionDelta.y--
                 break
             }
             case 'right': {
-                positionDelta.x += TILE_SIZE
+                positionDelta.x++
                 break
             }
             case 'left': {
-                positionDelta.x -= TILE_SIZE
+                positionDelta.x--
                 break
             }
             default:

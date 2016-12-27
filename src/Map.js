@@ -26,4 +26,10 @@ export class Map {
     this.tiles[(this.rows / 2 + 1) * this.cols + this.cols / 2 + 1].type = TileType.WALL
 
 }
+    getTile = (x, y) => {
+        
+        return (x > this.cols - 1 || y > this.rows - 1 || x < 0 || y < 0)?
+            undefined:
+            this.tiles[y*this.cols + x]
+    }
 }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import disableScroll from '../ScrollDisable.js'
-import {TILE_SIZE} from '../World.js'
-import Hero from '../Containers/Hero.js'
 import '../App.css';
 import Map  from './Map'
 disableScroll()
@@ -21,7 +19,6 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
             <Map/>
-            <Hero width={TILE_SIZE} height={TILE_SIZE}/>
       </div>
     );
   }

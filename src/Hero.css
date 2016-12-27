@@ -1,4 +1,5 @@
 .hero{
     position: absolute;
     background-color: darkblue;
+    z-index: 2;
 } 
