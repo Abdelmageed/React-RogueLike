@@ -1,5 +1,18 @@
-.Map {
+#Map {
     position: relative;
     z-index: 0;
     margin: auto
+}
+
+#GameViewContainer {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    margin: auto;
+}
+#GameView {
+    margin: auto;
+    width: 60%;
+    height: 620px;
+    overflow: scroll;
 }

@@ -8,6 +8,8 @@ const rows = 40, cols = 50
 export const mapGenerator = new MapGenerator (rows, cols)
 const Map = (props) => {
     
+    
+
     const tileComps = mapGenerator.tiles.map ((tile)=>{
         return (<Tile x={tile.x} y={tile.y} type={tile.type} key={tile.x + ' ' + tile.y}/>)
     })
@@ -17,10 +19,13 @@ const Map = (props) => {
         height: (rows * TILE_SIZE),
         position: 'relative'
     } 
-    return (<div style={style} className="Map">
-                {tileComps}
-                <Hero width={TILE_SIZE} height={TILE_SIZE}/>
-
-            </div>)
+    return (
+            <div id="GameView">
+                <div style={style} id="Map">
+                        {tileComps}
+                        <Hero width={TILE_SIZE} height={TILE_SIZE}/>
+                </div>
+            </div>
+    )
 }
-export default Map            
+export default Map      
