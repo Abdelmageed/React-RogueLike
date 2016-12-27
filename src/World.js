@@ -1,7 +1,7 @@
 import './Map.css'
 
 export const cols = 50
-export const rows = 10
+export const rows = 40
 export const WALKABLE = 'WALKABLE'
 export const WALL = 'WALL'
 export const TILE_SIZE = 20

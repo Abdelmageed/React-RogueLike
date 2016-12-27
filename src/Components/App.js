@@ -4,7 +4,7 @@ import disableScroll from '../ScrollDisable.js'
 import {TILE_SIZE} from '../World.js'
 import Hero from '../Containers/Hero.js'
 import '../App.css';
-
+import Map  from './Map'
 disableScroll()
 
 class App extends Component {
@@ -20,9 +20,8 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-            <div className="Map">
-                <Hero width={TILE_SIZE} height={TILE_SIZE}/>
-            </div>
+            <Map/>
+            <Hero width={TILE_SIZE} height={TILE_SIZE}/>
       </div>
     );
   }
