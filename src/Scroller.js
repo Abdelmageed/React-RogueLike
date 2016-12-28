@@ -1,9 +1,28 @@
-import { TILE_SIZE } from './World.js'
+import { TILE_SIZE, rows } from './World.js'
+import $ from 'jquery'
+
+var currentPosition = {x: 0, y: 0}
+$(document).ready(function() {
+  function setHeight() {
+    var windowHeight = $(window).innerHeight();
+    $('#GameView').height(windowHeight);
+      console.log (`windowHeight ${windowHeight}, resizing`)
+      
+  };
+  setHeight();
+  
+  $(window).resize(function() {
+    setHeight()
+    scroll (currentPosition.x, currentPosition.y)
+  })
+})
 export const scroll = (x, y) => {
-    const gameView = document.getElementById ('GameView')
+    currentPosition.x = x, currentPosition.y = y
+    const gameView = $('#GameView')
     if (gameView) {
-        gameView.scrollLeft= x * TILE_SIZE - gameView.clientWidth / 2
-        gameView.scrollTop= gameView.scrollHeight - gameView.clientHeight / 2 - y * TILE_SIZE 
-        console.log (`scrollTop:${gameView.scrollTop} scrollleft:${gameView.scrollLeft}`)
+        gameView.scrollLeft (x * TILE_SIZE - gameView.innerWidth() / 2)
+        gameView.scrollTop (rows * TILE_SIZE - gameView.innerHeight() / 2 - y * TILE_SIZE )
+//        console.log (`scrollTop:${gameView.scrollTop} scrollleft:${gameView.scrollLeft}`)
+        console.log (`scrollHeight:${gameView.height()} height:${gameView.innerHeight()}`)
     }
 }

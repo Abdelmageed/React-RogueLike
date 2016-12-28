@@ -1,12 +1,9 @@
-import { initializeHero} from './World.js'
 import { TileType } from './Map.js'
 import { mapGenerator } from './Components/Map.js'
 import { scroll } from './Scroller.js'
-const heroInit = initializeHero()
 import {MOVE} from './Actions.js'
 
-//console.log (Map.init)
-export function hero (state = heroInit, action) {
+export function hero (state, action) {
     switch (action.type) {
         case MOVE: {
             let newPosition = {x: state.position.x + action.position.x,
