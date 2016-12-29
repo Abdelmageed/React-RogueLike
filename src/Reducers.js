@@ -1,6 +1,6 @@
 import { TileType } from './Map.js'
 import { mapGenerator } from './Components/Map.js'
-import { scroll } from './Scroller.js'
+//import { scroll } from './Scroller.js'
 import {MOVE} from './Actions.js'
 
 export function hero (state, action) {
@@ -11,7 +11,7 @@ export function hero (state, action) {
             let tile = mapGenerator.getTile (newPosition.x, newPosition.y)
             
             if (tile && tile.type === TileType.WALKABLE) {
-                scroll (newPosition.x, newPosition.y)
+//                scroll (newPosition.x, newPosition.y)
                 return Object.assign ({}, state, {position: newPosition})    
             }
             else {

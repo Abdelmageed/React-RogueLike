@@ -10,7 +10,8 @@ import './Movement';
 import './index.css';
 
 const heroInit = initializeHero()
-let store = createStore (hero, heroInit)
+let store = createStore (hero, Object.assign(heroInit, {camera: {width: 30, height: 30}}))
+console.log (store.getState())
 ReactDOM.render(
 <Provider store={store}>
   <App />

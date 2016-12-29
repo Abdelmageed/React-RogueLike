@@ -17,7 +17,7 @@ $(document).ready(() => {
     $('#GameView').height(windowHeight)
     scroll (currentPosition.x, currentPosition.y)
   }
-  setHeight()
+//  setHeight()
   
   $(window).resize(()=> {
     setHeight()
