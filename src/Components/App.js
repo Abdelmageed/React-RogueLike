@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import disableScroll from '../ScrollDisable.js'
 import '../App.css';
-import Map  from './Map'
+import MapComp  from './Map'
 
 disableScroll()
 
@@ -13,7 +14,7 @@ class App extends Component {
       
     return (
       
-            <Map/>
+            <MapComp/>
     );
   }
     

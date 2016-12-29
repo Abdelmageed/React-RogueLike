@@ -1,19 +1,22 @@
+/* eslint-disable */
 import React from 'react'
 import { Map as MapGenerator} from  '../Map.js'
 import '../Map.css'
-import { TILE_SIZE } from '../World.js'
-import Tile from '../Tile.js'
+import { TILE_SIZE, rows, cols, VISION_RADIUS} from '../World.js'
+import Tile from '../Containers/Tile.js'
+//import FogTile from '../Containers/FogTile.js'
 import Hero from '../Containers/Hero.js'
-const rows = 40, cols = 50
 export const mapGenerator = new MapGenerator (rows, cols)
-const Map = (props) => {
+const MapComp = (props) => {
     
-    
-
     const tileComps = mapGenerator.tiles.map ((tile)=>{
-        return (<Tile x={tile.x} y={tile.y} type={tile.type} key={tile.x + ' ' + tile.y}/>)
+//        let visible = ((Math.abs(tile.x - props.heroPosition.x) + Math.abs(tile.y - props.heroPosition.y)) / 2) <=    VISION_RADIUS
+        const id = tile.x + ' ' + tile.y;
+        return (<Tile key={id} id={id}/>)
     })
-    
+//    const fogTiles = mapGenerator.fogTiles.map ((tile)=>{
+//        return (<FogTile x={tile.x} y={tile.y} key={tile.x + ' ' + tile.y} />)
+//    })
     const style = {
         width: (cols * TILE_SIZE),
         height: (rows * TILE_SIZE),
@@ -28,4 +31,4 @@ const Map = (props) => {
             </div>
     )
 }
-export default Map      
+export default MapComp      

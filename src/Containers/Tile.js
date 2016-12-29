@@ -1,10 +1,9 @@
 import { connect } from 'react-redux'
-import MapComp from '../Components/Map'
+import TileComp from '../Components/Tile.js'
 
 const mapStateToProps = (state) => {
     return {heroPosition: state.position}
 }
+const Tile = connect(mapStateToProps)(TileComp)
 
-const Map = connect (mapStateToProps)(MapComp)
-
-export default Map
+export default Tile
