@@ -1,9 +1,10 @@
 import { TileType } from './Map.js'
 import { mapGenerator } from './Components/Map.js'
+import { combineReducers } from 'redux'
 //import { scroll } from './Scroller.js'
-import {MOVE} from './Actions.js'
+import {MOVE, RESIZE} from './Actions.js'
 
-export function hero (state, action) {
+function hero (state = {position:{x:0, y:0}}, action) {
     switch (action.type) {
         case MOVE: {
             let newPosition = {x: state.position.x + action.position.x,
@@ -19,7 +20,24 @@ export function hero (state, action) {
             }
         }
         default: {
-            return state;
+            return state
         }
     }
 }
+
+function camera (state = {width:0,height:0}, action) {
+    switch (action.type) {
+        case RESIZE: {
+//            console.log (action.camera)
+            return Object.assign ({}, state, action.camera)
+        }
+        default: {
+            return state
+        }
+    }
+}
+
+export const game = combineReducers ({
+    hero,
+    camera
+})

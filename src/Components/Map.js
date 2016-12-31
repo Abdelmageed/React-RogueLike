@@ -1,10 +1,7 @@
-/* eslint-disable */
 import React from 'react'
 import { Map as MapGenerator} from  '../Map.js'
 import '../Map.css'
-import { TILE_SIZE, rows, cols, VISION_RADIUS} from '../World.js'
-//import Tile from '../Containers/Tile.js'
-//import Hero from '../Containers/Hero.js'
+import { TILE_SIZE, rows, cols} from '../World.js'
 import TileComp from './Tile.js'
 import HeroComp from './Hero.js'
 export const mapGenerator = new MapGenerator (rows, cols)
@@ -22,6 +19,7 @@ const MapComp = (props) => {
     const style = {
         width: (props.camera.width * TILE_SIZE),
         height: (props.camera.height * TILE_SIZE),
+        top: (props.camera.top * TILE_SIZE),
         position: 'relative'
     } 
     const x = props.heroPosition.x - props.camera.width / 2,
@@ -41,7 +39,9 @@ const MapComp = (props) => {
         startY = 0
     else
         startY = y
-    console.log (`x:${startX} y:${startY}`)
+    startX = Math.round (startX)
+    startY = Math.round (startY)
+//    console.log (`x:${startX} y:${startY}`)
     const tileComps = mapGenerator
         .getTileRect(startX, startY, props.camera.width, props.camera.height)
         .map ((tile)=>{

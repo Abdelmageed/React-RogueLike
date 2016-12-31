@@ -1,13 +1,7 @@
-/* eslint-disable */
 import {TILE_SIZE} from './World.js'
 export const TileType = {
     WALKABLE : 'WALKABLE',
     WALL : 'WALL'
-}
-//single reference to dark style so as not to create a new object inside each tile on receiving new props
-export const DarkStyle = {
-    backgroundColor: 'black',
-   zIndex: 4
 }
 export class Map {
     constructor (rows, cols) {
@@ -22,7 +16,6 @@ export class Map {
         for (let j = 0; j < this.cols; j++){
             this.tiles[this.cols*i + j] = this.createTile (j, i, TileType.WALKABLE)
             }
-//            this.fogTiles[this.cols*i + j] = {x: j, y: i}
         }
     //square wall in the middle
     this.tiles[this.rows/2*this.cols + this.cols/2] = this.createTile (this.cols/2, this.rows/2, TileType.WALL)
@@ -39,24 +32,26 @@ export class Map {
     }
     getTileByID = (id) => {
         const split = id.split (' ') 
-        var x = parseInt(split[0]), y = parseInt(split[1])
+        var x = parseInt(split[0], 10), y = parseInt(split[1], 10)
         return this.getTile (x, y)
     }
     getTileRect = (x, y, width, height) => {
-        //make a sane 2d array first
-        var tiles2d = new Array(this.rows);
-        for (let i = 0; i < this.rows; i++) {
-            tiles2d[i] = new Array(this.cols)
-            for (let j = 0; j < this.cols; j++){
-                tiles2d[i][j] = this.tiles [i*this.cols  + j]
-            }
-        }
-//        let rect = []
+        //TODO fix this solution
+        //        let rect = []
 //        let j = y
 //        while (j < height + y) {
 //            rect = rect.concat (this.tiles.slice(j * this.cols + x, j * this.cols + width))
 //            j++
 //        }
+        
+        //make a sane 2d array first
+        var tiles2d = new Array(this.rows);
+        for (let i = 0; i < this.rows; i++) {
+            tiles2d[i] = new Array(this.cols)
+            for (let j = 0; j < this.cols; j++){
+                tiles2d[i][j] = this.tiles[i*this.cols  + j]
+            }
+        }
         //now copy a rect
         var rect = new Array(height)
         for (let i = 0; i < height; i++){
@@ -70,12 +65,13 @@ export class Map {
         return rect
     }
     createTile = (x, y, type) => {
+        //bake (all) propeties in tile, as to not create new object references in render() 
         const style = {                    
                     left: (x * TILE_SIZE),
                     bottom: (y * TILE_SIZE),
                     width: TILE_SIZE, height: TILE_SIZE,
                     position: 'absolute',
-                    backgroundColor: (type == TileType.WALKABLE)?'white':'grey',
+                    backgroundColor: (type === TileType.WALKABLE)?'white':'grey',
                     zIndex: 1
                 }
         const darkStyle = Object.assign ({}, style, {backgroundColor: 'black'}, {zIndex:4})
@@ -83,6 +79,4 @@ export class Map {
             x: x, y: y, type: type, style: style, darkStyle: darkStyle
         }
     }
-}
-   
-    
+} 
