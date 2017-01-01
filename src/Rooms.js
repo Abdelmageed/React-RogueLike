@@ -1,4 +1,5 @@
-import { TileType } from './Map'
+//TODO rooms need to be smaller (much negative space)
+import { TileType } from './World'
 
 //constant width and height for all rooms
 export const width = 30, height = 30
@@ -7,14 +8,14 @@ class Room {
     constructor () {
         this.tiles = this.makeEmptyRoom ()
     }
-    function addWall (x, y, width, height) {
+    addWall = (x, y, width, height) => {
         for (let i = y; i < y + height; i++) {
             for (let j = x; j < x + width; j++) {
                 this.tiles[i][j] = TileType.Wall
             }
         }       
    }
-    function makeEmptyRoom () {
+    makeEmptyRoom = () => {
         let tiles = new Array (height)
         for (let i = 0; i < height; i++){
             tiles[i] = new Array (width)
@@ -46,8 +47,7 @@ rooms[4].addWall (5, 20, 12, 5)
 rooms[4].addWall (13, 5, 12, 5)
 
 rooms.push (new Room ())
-
-export rooms
+export {rooms}
 
 
 

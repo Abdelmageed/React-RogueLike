@@ -5,14 +5,20 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import { game } from './Reducers'
 //import { move } from './Actions'
-import { initializeHero, setCamera} from './World.js'
+//import { initializeHero} from './World'
+import { levels } from './Levels'
+import { setCamera } from './Camera'
 import './Movement';
-import './Camera'
 import './index.css';
-const hero = initializeHero()
+
+const hero = {position: levels[0].startPosition}
 const camera = setCamera ()
-export const store = createStore (game, Object.assign({hero: hero}, {camera: camera}))
-//console.log (store.getState())
+export const store = createStore (game, Object.assign(
+//    {hero: hero}, 
+    {camera: camera}, 
+    {world: {levels: levels, activeLevel: 0, hero: hero}}
+     ))
+
 ReactDOM.render(
 <Provider store={store}>
   <App />

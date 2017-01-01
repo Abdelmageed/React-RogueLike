@@ -1,9 +1,7 @@
 import React from 'react'
 import { VISION_RADIUS, TILE_SIZE} from '../World.js'
-//import { TileType } from '../Map.js'
-import { mapGenerator } from './Map.js'
 const TileComp = (props) => {
-    const tile = mapGenerator.getTileByID (props.id)
+    const tile = props.map.getTileByID (props.id)
     let diff = {x: tile.x - props.heroPosition.x, y: tile.y - props.heroPosition.y}
     let visible = ( Math.sqrt(diff.x * diff.x + diff.y * diff.y) ) <=    VISION_RADIUS
 

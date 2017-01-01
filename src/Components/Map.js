@@ -1,10 +1,10 @@
 import React from 'react'
-import { Map as MapGenerator} from  '../Map.js'
+//import { Map as MapGenerator} from  '../Map.js'
 import '../Map.css'
-import { TILE_SIZE, rows, cols} from '../World.js'
+import { TILE_SIZE } from '../World.js'
 import TileComp from './Tile.js'
 import HeroComp from './Hero.js'
-export const mapGenerator = new MapGenerator (rows, cols)
+//export const mapGenerator = new MapGenerator (rows, cols)
 
 const MapComp = (props) => {
     
@@ -17,14 +17,14 @@ const MapComp = (props) => {
     const x = props.heroPosition.x - props.camera.width / 2,
           y = props.heroPosition.y - props.camera.height / 2
     var startX, startY
-    if (cols - props.heroPosition.x < props.camera.width / 2)
-        startX = cols - props.camera.width
+    if (props.map.cols - props.heroPosition.x < props.camera.width / 2)
+        startX = props.map.cols - props.camera.width
     else if (props.heroPosition.x - props.camera.width / 2 < 0)
         startX = 0
     else
         startX = x
-    if (rows - props.heroPosition.y < props.camera.height / 2)
-        startY = rows - props.camera.height
+    if (props.map.rows - props.heroPosition.y < props.camera.height / 2)
+        startY = props.map.rows - props.camera.height
     else if (props.heroPosition.y - props.camera.height / 2 < 0)
         startY = 0
     else
@@ -32,12 +32,15 @@ const MapComp = (props) => {
     startX = Math.round (startX)
     startY = Math.round (startY)
 //    console.log (`x:${startX} y:${startY}`)
-    const tileComps = mapGenerator
+    const tileComps = props.map
         .getTileRect(startX, startY, props.camera.width, props.camera.height)
         .map ((tile)=>{
+        if (!tile) {
+            console.log (`startX:${startX} startY:${startY}`)
+        }
         const id = tile.x + ' ' + tile.y;
         return (<TileComp heroPosition={props.heroPosition} key={id} id={id} cameraX={startX} 
-                cameraY={startY}/>)
+                cameraY={startY} map={props.map}/>)
     })
 //    console.log (props.heroPosition)
     return (
