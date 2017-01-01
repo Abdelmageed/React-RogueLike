@@ -75,7 +75,6 @@ class Level {
 //            rect = rect.concat (this.tiles.slice(j * this.cols + x, j * this.cols + width))
 //            j++
 //        }
-        
         //make a sane 2d array first
         var tiles2d = new Array(this.rows);
         for (let i = 0; i < this.rows; i++) {
@@ -125,12 +124,12 @@ class Level {
         this.startPosition = this.roomWalkablePositions[randIndex]
     }
 }
-levels.push (new Level (75, 75))
-levels[0].addRoom (rooms[0], 5, 40)
-levels[0].addRoom (rooms[3], 40, 45)
-levels[0].addRoom (rooms[1], 30, 0)
-levels[0].addPaths ([{x:25, y:40}, {x:25, y:15}, {x:30, y:15}])
-levels[0].addPaths ([{x:45, y:30}, {x:45, y:45}])
+levels.push (new Level (50, 50))
+levels[0].addRoom (rooms[0], 3, 20)
+levels[0].addRoom (rooms[3], 20, 23)
+levels[0].addRoom (rooms[1], 15, 0)
+levels[0].addPaths ([{x:13, y:20}, {x:13, y:7}, {x:15, y:7}])
+levels[0].addPaths ([{x:23, y:15}, {x:23, y:23}])
 levels[0].init ()
 
 export {levels}

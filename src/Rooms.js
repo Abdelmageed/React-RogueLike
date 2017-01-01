@@ -2,7 +2,7 @@
 import { TileType } from './World'
 
 //constant width and height for all rooms
-export const width = 30, height = 30
+export const width = 15, height = 15
 
 class Room {
     constructor () {
@@ -29,22 +29,22 @@ class Room {
 var rooms = []
 
 rooms.push (new Room ())
-rooms[0].addWall (5, 12, 20, 5)
+rooms[0].addWall (3, 6, 10, 2)
 
 rooms.push (new Room ())
-rooms[1].addWall (7, 12, 16, 5)
-rooms[1].addWall (12, 7, 5, 16)
+rooms[1].addWall (4, 6, 8, 3)
+rooms[1].addWall (6, 4, 3, 8)
 
 rooms.push (new Room ())
-rooms[2].addWall (10, 10, 10, 10)
+rooms[2].addWall (5, 5, 5, 5)
 
 rooms.push (new Room ())
-rooms[3].addWall (5, 5, 7, 20)
-rooms[3].addWall (18, 5, 7, 20)
+rooms[3].addWall (3, 3, 4, 10)
+rooms[3].addWall (9, 3, 4, 10)
 
 rooms.push (new Room ())
-rooms[4].addWall (5, 20, 12, 5)
-rooms[4].addWall (13, 5, 12, 5)
+rooms[4].addWall (3, 10, 6, 3)
+rooms[4].addWall (7, 3, 6, 3)
 
 rooms.push (new Room ())
 export {rooms}
