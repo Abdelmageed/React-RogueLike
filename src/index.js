@@ -12,6 +12,7 @@ import './Movement';
 import './index.css';
 
 const hero = {position: levels[0].startPosition}
+//console.log (levels[1].startPosition)
 const camera = setCamera ()
 export const store = createStore (game, Object.assign(
 //    {hero: hero}, 

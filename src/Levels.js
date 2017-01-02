@@ -16,6 +16,7 @@ class Level {
         this.tiles = new Array (rows * cols)
         this.roomWalkablePositions = []
         this.startPosition = {}
+        this.exitPortalPosition = {}
     }
     addRoom = (room, x, y) => {
         for (let i = y; i < roomHeight + y; i++) {
@@ -36,7 +37,7 @@ class Level {
                 s = end.y
                 e = start.y
             }
-            for (let i = s; i < e; i++) {
+            for (let i = s; i <= e; i++) {
                 this.tileMap[i][start.x] = TileType.WALKABLE
             }
         }  else if (start.y === end.y) {     
@@ -45,7 +46,7 @@ class Level {
                 s = end.x
                 e = start.x
             }
-            for (let i = s; i < e; i++) {
+            for (let i = s; i <= e; i++) {
                 
                 this.tileMap[start.y][i] = TileType.WALKABLE
             }
@@ -121,8 +122,17 @@ class Level {
         }
     }
     setStartPosition = () => {
-        let randIndex = Math.round(Math.random() * this.roomWalkablePositions.length);
+        let randIndex = Math.round(Math.random() * this.roomWalkablePositions.length)
         this.startPosition = this.roomWalkablePositions[randIndex]
+        this.roomWalkablePositions.splice(randIndex,1)
+    }
+    setReturnPortal = () => {
+        this.tiles[this.startPosition.y * this.cols + this.startPosition.x].type = TileType.RETURN_PORTAL
+    }
+    setExitPortal = () => {
+        let randIndex = Math.round(Math.random() * this.roomWalkablePositions.length)
+        this.exitPortalPosition = this.roomWalkablePositions[randIndex]
+        this.tiles[this.exitPortalPosition.y*this.cols + this.exitPortalPosition.x].type = TileType.EXIT_PORTAL
     }
 }
 levels.push (new Level (40, 40))
@@ -132,6 +142,7 @@ levels[0].addRoom (rooms[1], 15, 0)
 levels[0].addPaths ([{x:13, y:20}, {x:13, y:7}, {x:15, y:7}])
 levels[0].addPaths ([{x:23, y:15}, {x:23, y:23}])
 levels[0].init ()
+levels[0].setExitPortal ()
 
 levels.push (new Level (60, 60))
 levels[1].addRoom (rooms[2], 23, 23)
@@ -139,10 +150,11 @@ levels[1].addRoom (rooms[0], 5, 5)
 levels[1].addRoom (rooms[1], 5, 40)
 levels[1].addRoom (rooms[4], 40, 40)
 levels[1].addRoom (rooms[3], 40, 5)
-levels[1].addPaths ([{x:23, y:25}, {x:23,y:20}])
-levels[1].addPaths ([{x:23, y:35}, {x:23,y:40}])
-levels[1].addPaths ([{x:38, y:25}, {x:38,y:20}])
-levels[1].addPaths ([{x:38, y:35}, {x:38,y:40}])
+levels[1].addPaths ([{x:23, y:25}, {x:23, y:18}, {x:20, y:18}])
+levels[1].addPaths ([{x:23, y:35}, {x:18, y:35}, {x:18, y: 40}])
+levels[1].addPaths ([{x:38, y:30}, {x:45, y:30}, {x:45, y:40}])
+levels[1].addPaths ([{x:38, y:26}, {x:46, y:26}, {x:46, y:20}])
 levels[1].init ()
+levels[1].setReturnPortal ()
 
 export {levels}

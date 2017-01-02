@@ -40,6 +40,18 @@ function interactWithTile (tile, state) {
             return Object.assign ({}, state, {hero:Object.assign (
                 {}, state.hero, {position: {x:tile.x, y:tile.y}})})  
         }
+        case TileType.EXIT_PORTAL: {
+            let newActive = state.activeLevel + 1
+            return Object.assign ({}, state, {activeLevel: newActive},
+                                 {hero:Object.assign (
+                                    {}, state.hero, {position: state.levels[newActive].startPosition})})
+        }
+        case TileType.RETURN_PORTAL: {
+            let newActive = state.activeLevel - 1
+            return Object.assign ({}, state, {activeLevel: newActive},
+                                 {hero:Object.assign (
+                                    {}, state.hero, {position: state.levels[newActive].exitPortalPosition})})
+        }
         default: {
             return state
         }

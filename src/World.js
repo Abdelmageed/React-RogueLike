@@ -8,7 +8,15 @@ export const HERO_SPEED = 25           //tiles per second
 export const VISION_RADIUS = 4
 export const TileType = {
     WALKABLE : 'WALKABLE',
-    WALL : 'WALL'
+    WALL : 'WALL',
+    EXIT_PORTAL: 'EXIT_PORTAL',
+    RETURN_PORTAL: 'RETURN_PORTAL'
+}
+export const TileColors = {
+    WALKABLE: 'white',
+    WALL: 'grey',
+    EXIT_PORTAL: 'purple',
+    RETURN_PORTAL: 'purple'
 }
 //export function initializeHero () {
 //    let startPosition = {x: 0, y: 36}
