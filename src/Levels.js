@@ -1,5 +1,5 @@
 import { rooms, width as roomWidth, height as roomHeight } from './Rooms'
-import { TILE_SIZE, TileType } from './World'
+import { TileType } from './World'
 var levels = []
 
 class Level {
@@ -105,18 +105,19 @@ class Level {
         this.setStartPosition ()
     }
     createTile = (x, y, type) => {
-        //bake (all) propeties in tile, as to not create new object references in render() 
-        const style = {                    
-                    left: (x * TILE_SIZE),
-                    bottom: (y * TILE_SIZE),
-                    width: TILE_SIZE, height: TILE_SIZE,
-                    position: 'absolute',
-                    backgroundColor: (type === TileType.WALKABLE)?'white':'grey',
-                    zIndex: 1
-                }
-        const darkStyle = Object.assign ({}, style, {backgroundColor: 'black'}, {zIndex:4})
+        //bake (all) propeties in tile, as to not create new object references in render()
+        //TILE_SIZE is now part of the state, can't make it.
+//        const style = {                    
+//                    left: (x * TILE_SIZE),
+//                    bottom: (y * TILE_SIZE),
+//                    width: TILE_SIZE, height: TILE_SIZE,
+//                    position: 'absolute',
+//                    backgroundColor: (type === TileType.WALKABLE)?'white':'grey',
+//                    zIndex: 1
+//                }
+//        const darkStyle = Object.assign ({}, style, {backgroundColor: 'black'}, {zIndex:4})
         return {
-            x: x, y: y, type: type, style: style, darkStyle: darkStyle
+            x: x, y: y, type: type
         }
     }
     setStartPosition = () => {
@@ -124,12 +125,24 @@ class Level {
         this.startPosition = this.roomWalkablePositions[randIndex]
     }
 }
-levels.push (new Level (50, 50))
+levels.push (new Level (40, 40))
 levels[0].addRoom (rooms[0], 3, 20)
 levels[0].addRoom (rooms[3], 20, 23)
 levels[0].addRoom (rooms[1], 15, 0)
 levels[0].addPaths ([{x:13, y:20}, {x:13, y:7}, {x:15, y:7}])
 levels[0].addPaths ([{x:23, y:15}, {x:23, y:23}])
 levels[0].init ()
+
+levels.push (new Level (60, 60))
+levels[1].addRoom (rooms[2], 23, 23)
+levels[1].addRoom (rooms[0], 5, 5)
+levels[1].addRoom (rooms[1], 5, 40)
+levels[1].addRoom (rooms[4], 40, 40)
+levels[1].addRoom (rooms[3], 40, 5)
+levels[1].addPaths ([{x:23, y:25}, {x:23,y:20}])
+levels[1].addPaths ([{x:23, y:35}, {x:23,y:40}])
+levels[1].addPaths ([{x:38, y:25}, {x:38,y:20}])
+levels[1].addPaths ([{x:38, y:35}, {x:38,y:40}])
+levels[1].init ()
 
 export {levels}

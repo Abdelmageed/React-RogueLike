@@ -1,4 +1,4 @@
-import { move } from './Actions'
+import { interact } from './Actions'
 import store from './index'
 import { HERO_SPEED } from './World'
 
@@ -67,5 +67,5 @@ function handleInput () {
             default:
     }
     })
-    store.dispatch (move(positionDelta))
+    store.dispatch (interact(positionDelta))
 }

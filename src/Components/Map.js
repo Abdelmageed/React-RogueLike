@@ -1,7 +1,7 @@
 import React from 'react'
 //import { Map as MapGenerator} from  '../Map.js'
 import '../Map.css'
-import { TILE_SIZE } from '../World.js'
+//import { TILE_SIZE } from '../Camera.js'
 import TileComp from './Tile.js'
 import HeroComp from './Hero.js'
 //export const mapGenerator = new MapGenerator (rows, cols)
@@ -9,9 +9,9 @@ import HeroComp from './Hero.js'
 const MapComp = (props) => {
     
     const style = {
-        width: (props.camera.width * TILE_SIZE),
-        height: (props.camera.height * TILE_SIZE),
-        top: (props.camera.top * TILE_SIZE),
+        width: (props.camera.width * props.camera.TILE_SIZE),
+        height: (props.camera.height * props.camera.TILE_SIZE),
+        top: (props.camera.top * props.camera.TILE_SIZE),
         position: 'relative'
     } 
     const x = props.heroPosition.x - props.camera.width / 2,
@@ -35,19 +35,15 @@ const MapComp = (props) => {
     const tileComps = props.map
         .getTileRect(startX, startY, props.camera.width, props.camera.height)
         .map ((tile)=>{
-        if (!tile) {
-            console.log (`startX:${startX} startY:${startY}`)
-        }
         const id = tile.x + ' ' + tile.y;
         return (<TileComp heroPosition={props.heroPosition} key={id} id={id} cameraX={startX} 
-                cameraY={startY} map={props.map}/>)
+                cameraY={startY} map={props.map} TILE_SIZE={props.camera.TILE_SIZE}/>)
     })
 //    console.log (props.heroPosition)
     return (
                 <div style={style} id="Map">
                         {tileComps}
-                        <HeroComp width={TILE_SIZE} height={TILE_SIZE} position={props.heroPosition}
-                            cameraX={startX} cameraY={startY}/>
+                        <HeroComp position={props.heroPosition} TILE_SIZE={props.camera.TILE_SIZE} cameraX={startX} cameraY={startY}/>
                 </div>
     )
 }

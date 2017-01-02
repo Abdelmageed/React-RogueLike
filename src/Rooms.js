@@ -1,4 +1,3 @@
-//TODO rooms need to be smaller (much negative space)
 import { TileType } from './World'
 
 //constant width and height for all rooms

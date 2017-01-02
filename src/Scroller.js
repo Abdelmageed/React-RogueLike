@@ -1,4 +1,4 @@
-import { TILE_SIZE, rows } from './World.js'
+import { TILE_SIZE, rows } from './Camera.js'
 import $ from 'jquery'
 
 var currentPosition = {x: 0, y: 0}
