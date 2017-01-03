@@ -27,7 +27,8 @@ import './Movement';
 import './index.css';
 
 const hero = {
-        position: levels[2].startPosition
+        position: levels[2].startPosition,
+        health: 100
     }
 const camera = setCamera()
 export const store = createStore(game, Object.assign(

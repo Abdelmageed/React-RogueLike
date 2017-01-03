@@ -1,5 +1,5 @@
 import React from 'react'
 
 export const TileInfo = (props) => {
-    return <div id='tileInfo' > {props.info} < /div>
+    return <span id='tileInfo' > {props.info} < /span>
 }

@@ -3,11 +3,14 @@ import {
 }
 from './Rooms'
 import {
-    TileType
+    TileType,
+    HEAL_AMOUNT
 }
 from './World'
 var levels = []
 
+//TODO add a remove tile method which sets the tile back to WALKABLE, and removes tile info from adjacent tiles
+//TODO fix spacing between interactable tiles, 2 interactable tiles  should always be at least 1 tile apart.
 class Level {
     constructor(cols, rows, index) {
         this.index = index
@@ -197,6 +200,16 @@ class Level {
                 this.roomWalkablePositions.splice(index, 1)}
         })
     }
+    setHealthPickups = () => {
+        for (let i = 0; i < 100; i++){
+            let rand = Math.round(Math.random() * this.roomWalkablePositions.length)
+            let pos = this.roomWalkablePositions[rand]
+            let tile = this.tiles[pos.y*this.cols + pos.x]
+            tile.type = TileType.HEALTH_PICKUP
+            this.setInfoTiles (tile, `Health + ${HEAL_AMOUNT}`)
+            this.roomWalkablePositions.splice (rand, 1)
+        }
+    }
 }
 levels.push(new Level(40, 40, 0))
 levels[0].addRoom(rooms[0], 3, 20)
@@ -328,6 +341,7 @@ levels[2].addPaths([{
     y: 8
 }])
 levels[2].init()
+levels[2].setHealthPickups()
 levels[2].setReturnPortal()
 
 

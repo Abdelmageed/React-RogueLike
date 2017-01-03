@@ -1,5 +1,6 @@
 import {
-    TileType
+    TileType,
+    HEAL_AMOUNT
 }
 from './World.js'
 import {
@@ -90,6 +91,23 @@ function interactWithTile(tile, state) {
                     hero: Object.assign({}, state.hero, {
                         position: state.levels[newActive].exitPortalPosition
                     })
+                })
+            }
+        case TileType.HEALTH_PICKUP:
+            {
+                //TODO only active level should be in state
+                let levelsClone = Object.assign({}, state.levels)
+                //TODO tile id must be present in this object 
+                levelsClone[state.activeLevel].getTile(tile.x, tile.y).type = TileType.WALKABLE
+                return Object.assign({}, state, {
+                    hero: Object.assign({}, state.hero, {
+                        position: {
+                            x: tile.x,
+                            y: tile.y
+                        },
+                        health: state.hero.health + HEAL_AMOUNT
+                    }),
+                    levels: Object.assign ({}, state.levels, levelsClone)
                 })
             }
         default:
