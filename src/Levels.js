@@ -9,7 +9,8 @@ from './World'
 var levels = []
 
 class Level {
-    constructor(cols, rows) {
+    constructor(cols, rows, index) {
+        this.index = index
         this.cols = cols
         this.rows = rows
         this.tileMap = new Array(rows)
@@ -143,15 +144,61 @@ class Level {
         this.roomWalkablePositions.splice(randIndex, 1)
     }
     setReturnPortal = () => {
-        this.tiles[this.startPosition.y * this.cols + this.startPosition.x].type = TileType.RETURN_PORTAL
+        let tile = this.tiles[this.startPosition.y * this.cols + this.startPosition.x]
+        tile.type = TileType.RETURN_PORTAL
+        this.setInfoTiles (tile, `Back to level ${this.index}`)
     }
     setExitPortal = () => {
         let randIndex = Math.round(Math.random() * this.roomWalkablePositions.length)
         this.exitPortalPosition = this.roomWalkablePositions[randIndex]
-        this.tiles[this.exitPortalPosition.y * this.cols + this.exitPortalPosition.x].type = TileType.EXIT_PORTAL
+        let tile = this.tiles[this.exitPortalPosition.y * this.cols + this.exitPortalPosition.x]
+        tile.type = TileType.EXIT_PORTAL
+        this.setInfoTiles (tile, `Portal to level ${this.index + 2}`)
+    }
+    setInfoTiles = (tile, info) => {
+        const tileNeightbours = [
+            {
+                x: tile.x - 1,
+                y: tile.y
+            },
+            {
+                x: tile.x,
+                y: tile.y - 1
+            },
+            {
+                x: tile.x,
+                y: tile.y + 1
+            },
+            {
+                x: tile.x + 1,
+                y: tile.y
+            },
+            {
+                x: tile.x + 1,
+                y: tile.y + 1
+            },
+            {
+                x: tile.x + 1,
+                y: tile.y - 1
+            },
+            {
+                x: tile.x - 1,
+                y: tile.y - 1
+            },
+            {
+                x: tile.x - 1,
+                y: tile.y + 1
+            }
+        ]
+        tileNeightbours.forEach((neighbour) => {
+            let index = neighbour.y * this.cols + neighbour.x
+            if (this.tiles[index]){
+                this.tiles[index].info = info
+                this.roomWalkablePositions.splice(index, 1)}
+        })
     }
 }
-levels.push(new Level(40, 40))
+levels.push(new Level(40, 40, 0))
 levels[0].addRoom(rooms[0], 3, 20)
 levels[0].addRoom(rooms[3], 20, 23)
 levels[0].addRoom(rooms[1], 15, 0)
@@ -175,7 +222,7 @@ levels[0].addPaths([{
 levels[0].init()
 levels[0].setExitPortal()
 
-levels.push(new Level(60, 60))
+levels.push(new Level(60, 60, 1))
 levels[1].addRoom(rooms[2], 23, 23)
 levels[1].addRoom(rooms[0], 5, 5)
 levels[1].addRoom(rooms[1], 5, 40)
@@ -225,7 +272,7 @@ levels[1].init()
 levels[1].setReturnPortal()
 levels[1].setExitPortal()
 
-levels.push(new Level(60, 60))
+levels.push(new Level(60, 60, 2))
 levels[2].addRoom(rooms[0], 0, 45)
 levels[2].addRoom(rooms[1], 20, 45)
 levels[2].addRoom(rooms[2], 40, 45)

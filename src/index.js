@@ -29,7 +29,6 @@ import './index.css';
 const hero = {
         position: levels[2].startPosition
     }
-    //console.log (levels[1].startPosition)
 const camera = setCamera()
 export const store = createStore(game, Object.assign(
     //    {hero: hero}, 
@@ -37,16 +36,17 @@ export const store = createStore(game, Object.assign(
         camera: camera
     }, {
         world: {
-            levels: levels,
-            activeLevel: 2,
-            hero: hero
-        }
+    levels: levels,
+    activeLevel: 2,
+    hero: hero,
+    hud: {
+        tileInfo: ''
+    }
+}
     }
 ))
 
-ReactDOM.render( < Provider store = {
-        store
-    } >
+ReactDOM.render( < Provider store={store} >
     < App / >
     < /Provider>,
     document.getElementById('root')

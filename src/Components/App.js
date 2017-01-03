@@ -1,22 +1,25 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React, {
+    Component
+}
+from 'react';
 import logo from '../logo.svg';
-import disableScroll from '../ScrollDisable.js'
+import disableScroll from '../ScrollDisable'
 import '../App.css';
 //import MapComp  from './Map'
-import Map from '../Containers/Map.js'
-disableScroll()
-
-class App extends Component {
-   
-  render() {
-      
-    return (
-      
-            <Map/>
-    );
-  }
-    
+import Map from '../Containers/Map'
+import {
+    HUD
 }
+from '../Containers/HUD'
+disableScroll()
+class App extends Component {
 
-export default App;
+    render() {
+
+        return ( < div > < HUD / > < Map / > < /div> );
+        }
+
+    }
+
+    export default App;
