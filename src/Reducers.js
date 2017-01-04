@@ -98,7 +98,7 @@ function interactWithTile(tile, state) {
                 //TODO only active level should be in state
                 let levelsClone = Object.assign({}, state.levels)
                 //TODO tile id must be present in this object 
-                levelsClone[state.activeLevel].getTile(tile.x, tile.y).type = TileType.WALKABLE
+                levelsClone[state.activeLevel].destroyTile (tile.x, tile.y)
                 return Object.assign({}, state, {
                     hero: Object.assign({}, state.hero, {
                         position: {

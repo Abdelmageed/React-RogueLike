@@ -9,8 +9,6 @@ import {
 from './World'
 var levels = []
 
-//TODO add a remove tile method which sets the tile back to WALKABLE, and removes tile info from adjacent tiles
-//TODO fix spacing between interactable tiles, 2 interactable tiles  should always be at least 1 tile apart.
 class Level {
     constructor(cols, rows, index) {
         this.index = index
@@ -158,8 +156,50 @@ class Level {
         tile.type = TileType.EXIT_PORTAL
         this.setInfoTiles (tile, `Portal to level ${this.index + 2}`)
     }
+    setHealthPickups = () => {
+        for (let i = 0; i < 10; i++){
+            let rand = Math.round(Math.random() * this.roomWalkablePositions.length)
+            let pos = this.roomWalkablePositions.splice (rand, 1)[0]
+            let tile = this.tiles[pos.y*this.cols + pos.x]
+            tile.type = TileType.HEALTH_PICKUP
+            this.setInfoTiles (tile, `Health + ${HEAL_AMOUNT}`)
+            
+        }
+    }
     setInfoTiles = (tile, info) => {
-        const tileNeightbours = [
+        
+        let tileNeighbours = this.getTileNeighbours (tile)
+        tileNeighbours.forEach((neighbour) => {
+            let index = neighbour.y * this.cols + neighbour.x
+
+            if (this.tiles[index]){
+                this.tiles[index].info = info
+//                this.roomWalkablePositions.splice(index, 1)}
+                //walkable positions could be made an object for constant access 
+                this.roomWalkablePositions = this.roomWalkablePositions.filter ((item) => { return (item.x !== neighbour.x || item.y !== neighbour.y)})
+        }})
+
+    }
+    
+    
+    destroyTile = (x, y) => {
+        let tile = this.tiles[y*this.cols + x]
+        tile.type = TileType.WALKABLE
+        this.removeInfoTiles (tile)
+    }
+    removeInfoTiles = (tile) => {
+        let /*the*/ neighbours /*hear*/ = this.getTileNeighbours (tile)
+        neighbours.forEach((neighbour) => {
+            let index = neighbour.y * this.cols + neighbour.x
+
+            if (this.tiles[index]){
+                this.tiles[index].info = ''
+//                this.roomWalkablePositions.splice(index, 1)}
+                this.roomWalkablePositions.push ({x: neighbour.x, y: neighbour.y})
+        }})
+        
+    }
+    getTileNeighbours = (tile) => [
             {
                 x: tile.x - 1,
                 y: tile.y
@@ -192,24 +232,7 @@ class Level {
                 x: tile.x - 1,
                 y: tile.y + 1
             }
-        ]
-        tileNeightbours.forEach((neighbour) => {
-            let index = neighbour.y * this.cols + neighbour.x
-            if (this.tiles[index]){
-                this.tiles[index].info = info
-                this.roomWalkablePositions.splice(index, 1)}
-        })
-    }
-    setHealthPickups = () => {
-        for (let i = 0; i < 100; i++){
-            let rand = Math.round(Math.random() * this.roomWalkablePositions.length)
-            let pos = this.roomWalkablePositions[rand]
-            let tile = this.tiles[pos.y*this.cols + pos.x]
-            tile.type = TileType.HEALTH_PICKUP
-            this.setInfoTiles (tile, `Health + ${HEAL_AMOUNT}`)
-            this.roomWalkablePositions.splice (rand, 1)
-        }
-    }
+        ]   
 }
 levels.push(new Level(40, 40, 0))
 levels[0].addRoom(rooms[0], 3, 20)

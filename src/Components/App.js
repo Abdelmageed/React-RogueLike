@@ -8,10 +8,7 @@ import disableScroll from '../ScrollDisable'
 import '../App.css';
 //import MapComp  from './Map'
 import Map from '../Containers/Map'
-import {
-    HUD
-}
-from '../Containers/HUD'
+import { HUD }from '../Containers/HUD'
 disableScroll()
 class App extends Component {
 
