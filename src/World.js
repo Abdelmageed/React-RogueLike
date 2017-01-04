@@ -12,14 +12,16 @@ export const TileType = {
     WALL : 'WALL',
     EXIT_PORTAL: 'EXIT_PORTAL',
     RETURN_PORTAL: 'RETURN_PORTAL',
-    HEALTH_PICKUP: 'HEALTH_PICKUP' 
+    HEALTH_PICKUP: 'HEALTH_PICKUP',
+    ENEMY: 'ENEMY'
 }
 export const TileColors = {
     WALKABLE: 'white',
     WALL: 'grey',
     EXIT_PORTAL: 'purple',
     RETURN_PORTAL: 'purple',
-    HEALTH_PICKUP: 'green'
+    HEALTH_PICKUP: 'green',
+    ENEMY: 'red'
 }
 //export function initializeHero () {
 //    let startPosition = {x: 0, y: 36}

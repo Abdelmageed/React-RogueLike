@@ -97,7 +97,6 @@ function interactWithTile(tile, state) {
             {
                 //TODO only active level should be in state
                 let levelsClone = Object.assign({}, state.levels)
-                //TODO tile id must be present in this object 
                 levelsClone[state.activeLevel].destroyTile (tile.x, tile.y)
                 return Object.assign({}, state, {
                     hero: Object.assign({}, state.hero, {
@@ -109,6 +108,38 @@ function interactWithTile(tile, state) {
                     }),
                     levels: Object.assign ({}, state.levels, levelsClone)
                 })
+            }
+        case TileType.ENEMY:
+            {
+                let enemyId = `${tile.x} ${tile.y}`
+                let levelsClone = Object.assign({}, state.levels)
+                let enemy = levelsClone[state.activeLevel].enemies[enemyId]
+                let res = enemy.takeDamage (state.hero.damage)
+                if (res['bounty']) {
+                    if (res['bounty'] !== 'win') {
+                        levelsClone[state.activeLevel].destroyEnemy (enemyId)
+                        return Object.assign ({}, state,{
+                            hero: Object.assign({}, state.hero,{
+                                position: {
+                                    x: tile.x,
+                                    y: tile.y
+                                },
+                                xp: state.hero.xp + res['bounty']
+                            })
+                        }, {
+                            levels: Object.assign({}, state.levels, levelsClone)
+                        })
+                    }
+                } else if (res['damage']){
+                    return Object.assign ({}, state,{
+                            hero: Object.assign({}, state.hero,{
+                               health: state.hero.health - res['damage']
+                            })
+                        }, {
+                            levels: Object.assign({}, state.levels, levelsClone)
+                        })
+                }
+                break;
             }
         default:
             {

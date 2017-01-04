@@ -27,8 +27,10 @@ import './Movement';
 import './index.css';
 
 const hero = {
-        position: levels[2].startPosition,
-        health: 100
+        position: levels[0].startPosition,
+        health: 100,
+        damage: 10,
+        xp: 0
     }
 const camera = setCamera()
 export const store = createStore(game, Object.assign(
@@ -38,7 +40,7 @@ export const store = createStore(game, Object.assign(
     }, {
         world: {
     levels: levels,
-    activeLevel: 2,
+    activeLevel: 0,
     hero: hero,
     hud: {
         tileInfo: ''
