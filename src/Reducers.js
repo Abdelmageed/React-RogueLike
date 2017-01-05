@@ -97,7 +97,7 @@ function interactWithTile(tile, state) {
             {
                 //TODO only active level should be in state
                 let levelsClone = Object.assign({}, state.levels)
-                levelsClone[state.activeLevel].destroyTile (tile.x, tile.y)
+                levelsClone[state.activeLevel].destroyTile(tile.x, tile.y)
                 return Object.assign({}, state, {
                     hero: Object.assign({}, state.hero, {
                         position: {
@@ -106,7 +106,10 @@ function interactWithTile(tile, state) {
                         },
                         health: state.hero.health + HEAL_AMOUNT
                     }),
-                    levels: Object.assign ({}, state.levels, levelsClone)
+                    levels: Object.assign({}, state.levels, levelsClone),
+                    hud: Object.assign({}, state.hud, {
+                        info: tile.info
+                    })
                 })
             }
         case TileType.ENEMY:
@@ -114,12 +117,14 @@ function interactWithTile(tile, state) {
                 let enemyId = `${tile.x} ${tile.y}`
                 let levelsClone = Object.assign({}, state.levels)
                 let enemy = levelsClone[state.activeLevel].enemies[enemyId]
-                let res = enemy.takeDamage (state.hero.damage)
+                let res = enemy.takeDamage(state.hero.damage)
+                console.log(enemy.getInfo())
+                levelsClone[state.activeLevel].setInfoTiles(tile, enemy.getInfo())
                 if (res['bounty']) {
                     if (res['bounty'] !== 'win') {
-                        levelsClone[state.activeLevel].destroyEnemy (enemyId)
-                        return Object.assign ({}, state,{
-                            hero: Object.assign({}, state.hero,{
+                        levelsClone[state.activeLevel].destroyEnemy(enemyId)
+                        return Object.assign({}, state, {
+                            hero: Object.assign({}, state.hero, {
                                 position: {
                                     x: tile.x,
                                     y: tile.y
@@ -127,17 +132,25 @@ function interactWithTile(tile, state) {
                                 xp: state.hero.xp + res['bounty']
                             })
                         }, {
-                            levels: Object.assign({}, state.levels, levelsClone)
+                            levels: Object.assign({}, state.levels, levelsClone),
+                            hud: Object.assign({}, state.hud, {
+                                info: tile.info
+                            })
                         })
                     }
-                } else if (res['damage']){
-                    return Object.assign ({}, state,{
-                            hero: Object.assign({}, state.hero,{
-                               health: state.hero.health - res['damage']
-                            })
-                        }, {
-                            levels: Object.assign({}, state.levels, levelsClone)
+                } else if (res['damage']) {
+                    let currentTile = levelsClone[state.activeLevel]
+                        .getTile(state.hero.position.x, state.hero.position.y)
+                    return Object.assign({}, state, {
+                        hero: Object.assign({}, state.hero, {
+                            health: state.hero.health - res['damage']
                         })
+                    }, {
+                        levels: Object.assign({}, state.levels, levelsClone),
+                        hud: Object.assign({}, state.hud, {
+                            info: currentTile.info
+                        })
+                    })
                 }
                 break;
             }

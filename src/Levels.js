@@ -170,7 +170,7 @@ class Level {
             let position = this.getRandomWalkablePosition ()
             let tile = this.tiles[position.y*this.cols + position.x]
             tile.type = TileType.ENEMY
-            this.setInfoTiles (tile, `Enemy Attack:${enemy.damage.min}-${enemy.damage.max} Health:${enemy.hp}`)
+            this.setInfoTiles (tile, enemy.getInfo ())
             this.enemies[`${position.x} ${position.y}`] = enemy
         }
     }
@@ -218,8 +218,7 @@ class Level {
                 this.roomWalkablePositions.push ({x: neighbour.x, y: neighbour.y})
          }})
     }
-    //TODO interactable tiles should be at least 2 tiles apart (not just 1),
-    // set tile info for inner neighbours and reserve outer neighbours 
+    
     getTileNeighbours = (tile) => (
         {
         outer:[

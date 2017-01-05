@@ -7,7 +7,6 @@ export const enemies = {
 //TODO add a getInfo method to update the info on taking damage
 export class Enemy {
     constructor (props) {
-        console.log (props)
        this.hp = props.hp
        this.damage = Object.assign({}, props.damage)
        this.bounty = props.bounty
@@ -21,9 +20,11 @@ export class Enemy {
             return { damage:this.getDamage () }
         }
     }
-    //TODO damage should be an int
     getDamage = () => {
         let t = Math.random ()
-        return (1 - t) * this.damage.min + t * this.damage.max
+        return Math.round((1 - t) * this.damage.min + t * this.damage.max, 10)
+    }
+    getInfo = () => {
+        return `Enemy Attack:${this.damage.min}-${this.damage.max} Health:${this.hp}`
     }
 }
