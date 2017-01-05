@@ -13,7 +13,8 @@ export const TileType = {
     EXIT_PORTAL: 'EXIT_PORTAL',
     RETURN_PORTAL: 'RETURN_PORTAL',
     HEALTH_PICKUP: 'HEALTH_PICKUP',
-    ENEMY: 'ENEMY'
+    ENEMY: 'ENEMY',
+    WEAPON: 'WEAPON'
 }
 export const TileColors = {
     WALKABLE: 'white',
@@ -21,7 +22,8 @@ export const TileColors = {
     EXIT_PORTAL: 'purple',
     RETURN_PORTAL: 'purple',
     HEALTH_PICKUP: 'green',
-    ENEMY: 'red'
+    ENEMY: 'red',
+    WEAPON: 'yellow'
 }
 export const getHeroStats = (level) => ({
     maxHealth: 100 + (50 * level),

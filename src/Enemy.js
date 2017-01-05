@@ -13,7 +13,6 @@ export class Enemy {
     takeDamage = (damage) => {
         this.hp -= damage
         if (this.hp <= 0) {
-            //this.die ()
             return { bounty:this.bounty }
         } else {
             return { damage:this.getDamage () }

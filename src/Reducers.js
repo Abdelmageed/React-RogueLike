@@ -5,11 +5,15 @@ import {
 }
 from './World.js'
 import {
+    init
+}
+from './Levels'
+import {
     combineReducers
 }
 from 'redux'
 import {
-    INTERACT, RESIZE
+    INTERACT, RESIZE, INITIALIZE
 }
 from './Actions.js'
 
@@ -30,27 +34,7 @@ function camera(state = {
     }
 }
 
-const addXP = (state, bounty) => {
-    let currentXP = state.xp,
-        xpToNext = state.xpToNext,
-        currentLevel = state.level
-    if (currentXP + bounty >= xpToNext) {
-        let nextStats = getHeroStats(currentLevel + 1)
-        return Object.assign({}, state, {
-            damage: nextStats.damage,
-            health: nextStats.maxHealth,
-            maxHealth: nextStats.maxHealth,
-            xpToNext: nextStats.xpToNext,
-            level: currentLevel + 1,
-            xp: currentXP + bounty - xpToNext,
-        })
-    }
-    else {
-        return Object.assign({}, state, {
-            xp: currentXP + bounty
-        })
-    }
-}
+
 
 function world(state = {}, action) {
     switch (action.type) {
@@ -67,6 +51,11 @@ function world(state = {}, action) {
                     //            else {
                     //                return state
                     //            }
+            }
+        case INITIALIZE:
+            {
+                return initialize(state)
+
             }
         default:
             {
@@ -137,12 +126,12 @@ function interactWithTile(tile, state) {
             }
         case TileType.ENEMY:
             {
-                let enemyId = `${tile.x} ${tile.y}`
-                let levelsClone = Object.assign({}, state.levels)
-                let enemy = levelsClone[state.activeLevel].enemies[enemyId]
-                let dmg = state.hero.damage,
-                    t = Math.random()
-                let res = enemy.takeDamage(Math.round((1 - t) * dmg.min + t * dmg.max))
+                let enemyId = `${tile.x} ${tile.y}`,
+                    levelsClone = Object.assign({}, state.levels),
+                    enemy = levelsClone[state.activeLevel].enemies[enemyId],
+                    dmg = state.hero.weaponDamage,
+                    t = Math.random(),
+                    res = enemy.takeDamage(Math.round((1 - t) * dmg.min + t * dmg.max))
                 levelsClone[state.activeLevel].setInfoTiles(tile, enemy.getInfo())
                 if (res['bounty']) {
                     if (res['bounty'] !== 'win') {
@@ -153,7 +142,7 @@ function interactWithTile(tile, state) {
                                     x: tile.x,
                                     y: tile.y
                                 }
-                            }, addXP (state.hero, res['bounty']))
+                            }, addXP(state.hero, res['bounty']))
                         }, {
                             levels: Object.assign({}, state.levels, levelsClone),
                             hud: Object.assign({}, state.hud, {
@@ -162,11 +151,16 @@ function interactWithTile(tile, state) {
                         })
                     }
                 } else if (res['damage']) {
+                    let health = state.hero.health - res['damage']
+                    if (health <= 0){
+                        return initialize (state)
+                    }
+                    else { 
                     let currentTile = levelsClone[state.activeLevel]
                         .getTile(state.hero.position.x, state.hero.position.y)
                     return Object.assign({}, state, {
                         hero: Object.assign({}, state.hero, {
-                            health: state.hero.health - res['damage']
+                            health: health
                         })
                     }, {
                         levels: Object.assign({}, state.levels, levelsClone),
@@ -174,8 +168,28 @@ function interactWithTile(tile, state) {
                             info: currentTile.info
                         })
                     })
+                    }
                 }
                 break;
+            }
+        case TileType.WEAPON:
+            {
+                let weaponId = `${tile.x} ${tile.y}`
+                let levelsClone = Object.assign({}, state.levels)
+                let weapon = levelsClone[state.activeLevel].weapons[weaponId]
+                levelsClone[state.activeLevel].destroyWeapon(weaponId)
+                return Object.assign({}, state, {
+                    hero: Object.assign({}, state.hero, {
+                        weapon: weapon,
+                        weaponDamage: {
+                            min: Math.round(state.hero.damage.min * weapon.dmgMod),
+                            max: Math.round(state.hero.damage.max * weapon.dmgMod)
+
+                        }
+                    })
+                }, {
+                    levels: levelsClone
+                })
             }
         default:
             {
@@ -185,7 +199,61 @@ function interactWithTile(tile, state) {
 
 }
 
+function addXP(state, bounty) {
+    let currentXP = state.xp,
+        xpToNext = state.xpToNext,
+        currentLevel = state.level
+    if (currentXP + bounty >= xpToNext) {
+        let nextStats = getHeroStats(currentLevel + 1)
+        return Object.assign({}, state, {
+            damage: nextStats.damage,
+            weaponDamage: {
+                min: Math.round(nextStats.damage.min * state.weapon.dmgMod),
+                max: Math.round(nextStats.damage.max * state.weapon.dmgMod)
+            },
+            health: nextStats.maxHealth,
+            maxHealth: nextStats.maxHealth,
+            xpToNext: nextStats.xpToNext,
+            level: currentLevel + 1,
+            xp: currentXP + bounty - xpToNext,
+        })
+    } else {
+        return Object.assign({}, state, {
+            xp: currentXP + bounty
+        })
+    }
+}
 
+function initialize(state) {
+    let level = 0,
+        levels = init ()
+    const heroStats = getHeroStats(level)
+    const hero = {
+        position: levels[level].startPosition,
+        health: heroStats.maxHealth,
+        maxHealth: heroStats.maxHealth,
+        damage: heroStats.damage,
+        xpToNext: heroStats.xpToNext,
+        weaponDamage: {
+            min: heroStats.damage.min,
+            max: heroStats.damage.max
+        },
+        xp: 0,
+        level: 0,
+        weapon: {
+            name: 'Fists',
+            dmgMod: 1
+        }
+    }
+    return Object.assign({}, state, {
+        levels: levels,
+        activeLevel: 0,
+        hero: hero,
+        hud: {
+            tileInfo: ''
+        }
+    })
+}
 
 export const game = combineReducers({
     camera,

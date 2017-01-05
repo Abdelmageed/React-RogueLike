@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
         maxHealth: state.world.hero.maxHealth,
         xpToNext: state.world.hero.xpToNext,
         xp: state.world.hero.xp,
-        damage: state.world.hero.damage,
+        damage: state.world.hero.weaponDamage,
         level: state.world.hero.level
     }
 }

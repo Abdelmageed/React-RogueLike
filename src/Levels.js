@@ -8,7 +8,7 @@ import {
 }
 from './World'
 import {enemies, Enemy} from './Enemy'
-var levels = []
+import { weapons, Weapon } from './Weapon'
 
 class Level {
     
@@ -28,6 +28,7 @@ class Level {
         this.startPosition = {}
         this.exitPortalPosition = {}
         this.enemies = {}
+        this.weapons = {}
     }
     addRoom = (room, x, y) => {
         for (let i = y; i < roomHeight + y; i++) {
@@ -185,6 +186,22 @@ class Level {
         this.removeInfoTiles (this.tiles[pos.y*this.cols+pos.x])
         delete this.enemies[id]
     }
+    //TODO merge with setEnemy
+    setWeapon = (weaponName) => {
+        let weapon = new Weapon (weapons[weaponName])
+        let position = this.getRandomWalkablePosition ()
+            let tile = this.tiles[position.y*this.cols + position.x]
+            tile.type = TileType.WEAPON
+            this.setInfoTiles (tile, `${weapon.name}`)
+            this.weapons[`${position.x} ${position.y}`] = weapon
+    }
+    //TODO merge destroyWeapon and destroyEnemy
+    destroyWeapon = (id) => {
+        let pos = this.getPositionFromId (id)
+        this.tiles[pos.y*this.cols+pos.x].type = TileType.WALKABLE
+        this.removeInfoTiles (this.tiles[pos.y*this.cols+pos.x])
+        delete this.weapons[id]
+    }
     setInfoTiles = (tile, info) => {
         let neighbours = this.getTileNeighbours (tile)
          neighbours.inner.forEach((neighbour) => {
@@ -308,142 +325,144 @@ class Level {
         }
     }
 }
-levels.push(new Level(40, 40, 0))
-levels[0].addRoom(rooms[0], 3, 20)
-levels[0].addRoom(rooms[3], 20, 23)
-levels[0].addRoom(rooms[1], 15, 0)
-levels[0].addPaths([{
-    x: 13,
-    y: 20
-}, {
-    x: 13,
-    y: 7
-}, {
-    x: 15,
-    y: 7
-}])
-levels[0].addPaths([{
-    x: 23,
-    y: 15
-}, {
-    x: 23,
-    y: 23
-}])
-levels[0].init()
-levels[0].setHealthPickups(10)
-levels[0].setEnemies('level1', 10)
-levels[0].setExitPortal()
 
-levels.push(new Level(60, 60, 1))
-levels[1].addRoom(rooms[2], 23, 23)
-levels[1].addRoom(rooms[0], 5, 5)
-levels[1].addRoom(rooms[1], 5, 40)
-levels[1].addRoom(rooms[4], 40, 40)
-levels[1].addRoom(rooms[3], 40, 5)
-levels[1].addPaths([{
-    x: 23,
-    y: 25
-}, {
-    x: 23,
-    y: 18
-}, {
-    x: 20,
-    y: 18
-}])
-levels[1].addPaths([{
-    x: 23,
-    y: 35
-}, {
-    x: 18,
-    y: 35
-}, {
-    x: 18,
-    y: 40
-}])
-levels[1].addPaths([{
-    x: 38,
-    y: 30
-}, {
-    x: 45,
-    y: 30
-}, {
-    x: 45,
-    y: 40
-}])
-levels[1].addPaths([{
-    x: 38,
-    y: 26
-}, {
-    x: 46,
-    y: 26
-}, {
-    x: 46,
-    y: 20
-}])
-levels[1].init()
-levels[1].setReturnPortal()
-levels[1].setExitPortal()
+export const init = () => {
+    var levels = []
+    levels.push(new Level(40, 40, 0))
+    levels[0].addRoom(rooms[0], 3, 20)
+    levels[0].addRoom(rooms[3], 20, 23)
+    levels[0].addRoom(rooms[1], 15, 0)
+    levels[0].addPaths([{
+        x: 13,
+        y: 20
+    }, {
+        x: 13,
+        y: 7
+    }, {
+        x: 15,
+        y: 7
+    }])
+    levels[0].addPaths([{
+        x: 23,
+        y: 15
+    }, {
+        x: 23,
+        y: 23
+    }])
+    levels[0].init()
+    levels[0].setHealthPickups(10)
+    levels[0].setEnemies('level1', 10)
+    levels[0].setWeapon('Dagger')
+    levels[0].setExitPortal()
 
-levels.push(new Level(60, 60, 2))
-levels[2].addRoom(rooms[0], 0, 45)
-levels[2].addRoom(rooms[1], 20, 45)
-levels[2].addRoom(rooms[2], 40, 45)
-levels[2].addRoom(rooms[3], 10, 25)
-levels[2].addRoom(rooms[4], 30, 25)
-levels[2].addRoom(rooms[5], 45, 0)
-levels[2].addPaths([{
-    x: 15,
-    y: 52
-}, {
-    x: 20,
-    y: 52
-}])
-levels[2].addPaths([{
-    x: 35,
-    y: 52
-}, {
-    x: 40,
-    y: 52
-}])
-levels[2].addPaths([{
-    x: 12,
-    y: 45
-}, {
-    x: 12,
-    y: 40
-}])
-levels[2].addPaths([{
-    x: 25,
-    y: 28
-}, {
-    x: 30,
-    y: 28
-}])
-levels[2].addPaths([{
-    x: 45,
-    y: 30
-}, {
-    x: 50,
-    y: 30
-}, {
-    x: 50,
-    y: 45
-}])
-levels[2].addPaths([{
-    x: 38,
-    y: 25
-}, {
-    x: 38,
-    y: 8
-}, {
-    x: 45,
-    y: 8
-}])
-levels[2].init()
-levels[2].setHealthPickups(10)
-levels[2].setReturnPortal()
+    levels.push(new Level(60, 60, 1))
+    levels[1].addRoom(rooms[2], 23, 23)
+    levels[1].addRoom(rooms[0], 5, 5)
+    levels[1].addRoom(rooms[1], 5, 40)
+    levels[1].addRoom(rooms[4], 40, 40)
+    levels[1].addRoom(rooms[3], 40, 5)
+    levels[1].addPaths([{
+        x: 23,
+        y: 25
+    }, {
+        x: 23,
+        y: 18
+    }, {
+        x: 20,
+        y: 18
+    }])
+    levels[1].addPaths([{
+        x: 23,
+        y: 35
+    }, {
+        x: 18,
+        y: 35
+    }, {
+        x: 18,
+        y: 40
+    }])
+    levels[1].addPaths([{
+        x: 38,
+        y: 30
+    }, {
+        x: 45,
+        y: 30
+    }, {
+        x: 45,
+        y: 40
+    }])
+    levels[1].addPaths([{
+        x: 38,
+        y: 26
+    }, {
+        x: 46,
+        y: 26
+    }, {
+        x: 46,
+        y: 20
+    }])
+    levels[1].init()
+    levels[1].setReturnPortal()
+    levels[1].setExitPortal()
 
-
-export {
-    levels
+    levels.push(new Level(60, 60, 2))
+    levels[2].addRoom(rooms[0], 0, 45)
+    levels[2].addRoom(rooms[1], 20, 45)
+    levels[2].addRoom(rooms[2], 40, 45)
+    levels[2].addRoom(rooms[3], 10, 25)
+    levels[2].addRoom(rooms[4], 30, 25)
+    levels[2].addRoom(rooms[5], 45, 0)
+    levels[2].addPaths([{
+        x: 15,
+        y: 52
+    }, {
+        x: 20,
+        y: 52
+    }])
+    levels[2].addPaths([{
+        x: 35,
+        y: 52
+    }, {
+        x: 40,
+        y: 52
+    }])
+    levels[2].addPaths([{
+        x: 12,
+        y: 45
+    }, {
+        x: 12,
+        y: 40
+    }])
+    levels[2].addPaths([{
+        x: 25,
+        y: 28
+    }, {
+        x: 30,
+        y: 28
+    }])
+    levels[2].addPaths([{
+        x: 45,
+        y: 30
+    }, {
+        x: 50,
+        y: 30
+    }, {
+        x: 50,
+        y: 45
+    }])
+    levels[2].addPaths([{
+        x: 38,
+        y: 25
+    }, {
+        x: 38,
+        y: 8
+    }, {
+        x: 45,
+        y: 8
+    }])
+    levels[2].init()
+    levels[2].setHealthPickups(10)
+    levels[2].setReturnPortal()
+    return levels
 }
+
