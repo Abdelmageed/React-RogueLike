@@ -14,7 +14,7 @@ import {
 }
 from './Reducers'
     //import { move } from './Actions'
-    //import { initializeHero} from './World'
+    import { getHeroStats } from './World'
 import {
     levels
 }
@@ -26,11 +26,15 @@ from './Camera'
 import './Movement';
 import './index.css';
 
+const heroStats = getHeroStats (0)
 const hero = {
         position: levels[0].startPosition,
-        health: 100,
-        damage: 10,
-        xp: 0
+        health: heroStats.maxHealth,
+        maxHealth: heroStats.maxHealth,
+        damage: heroStats.damage,
+        xpToNext: heroStats.xpToNext,
+        xp: 0,
+        level: 0
     }
 const camera = setCamera()
 export const store = createStore(game, Object.assign(

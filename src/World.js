@@ -23,6 +23,11 @@ export const TileColors = {
     HEALTH_PICKUP: 'green',
     ENEMY: 'red'
 }
+export const getHeroStats = (level) => ({
+    maxHealth: 100 + (50 * level),
+    damage: {min: 10 + (5 * level), max: 14 + (5 * level)},
+    xpToNext: 220 + (500 * level)
+})
 //export function initializeHero () {
 //    let startPosition = {x: 0, y: 36}
 //    return {position:startPosition}

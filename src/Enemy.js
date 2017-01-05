@@ -4,7 +4,6 @@ export const enemies = {
     level3: {hp: 100, damage:{min: 15, max: 19}, bounty: 100},
     boss: {hp: 200, damage:{min: 8, max: 20}, bounty: 'win'}
 }
-//TODO add a getInfo method to update the info on taking damage
 export class Enemy {
     constructor (props) {
        this.hp = props.hp

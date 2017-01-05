@@ -1,6 +1,7 @@
 import {
     TileType,
-    HEAL_AMOUNT
+    HEAL_AMOUNT,
+    getHeroStats
 }
 from './World.js'
 import {
@@ -26,6 +27,28 @@ function camera(state = {
             {
                 return state
             }
+    }
+}
+
+const addXP = (state, bounty) => {
+    let currentXP = state.xp,
+        xpToNext = state.xpToNext,
+        currentLevel = state.level
+    if (currentXP + bounty >= xpToNext) {
+        let nextStats = getHeroStats(currentLevel + 1)
+        return Object.assign({}, state, {
+            damage: nextStats.damage,
+            health: nextStats.maxHealth,
+            maxHealth: nextStats.maxHealth,
+            xpToNext: nextStats.xpToNext,
+            level: currentLevel + 1,
+            xp: currentXP + bounty - xpToNext,
+        })
+    }
+    else {
+        return Object.assign({}, state, {
+            xp: currentXP + bounty
+        })
     }
 }
 
@@ -95,7 +118,6 @@ function interactWithTile(tile, state) {
             }
         case TileType.HEALTH_PICKUP:
             {
-                //TODO only active level should be in state
                 let levelsClone = Object.assign({}, state.levels)
                 levelsClone[state.activeLevel].destroyTile(tile.x, tile.y)
                 return Object.assign({}, state, {
@@ -104,7 +126,8 @@ function interactWithTile(tile, state) {
                             x: tile.x,
                             y: tile.y
                         },
-                        health: state.hero.health + HEAL_AMOUNT
+                        health: Math.min(state.hero.health + HEAL_AMOUNT,
+                            state.hero.maxHealth)
                     }),
                     levels: Object.assign({}, state.levels, levelsClone),
                     hud: Object.assign({}, state.hud, {
@@ -117,8 +140,9 @@ function interactWithTile(tile, state) {
                 let enemyId = `${tile.x} ${tile.y}`
                 let levelsClone = Object.assign({}, state.levels)
                 let enemy = levelsClone[state.activeLevel].enemies[enemyId]
-                let res = enemy.takeDamage(state.hero.damage)
-                console.log(enemy.getInfo())
+                let dmg = state.hero.damage,
+                    t = Math.random()
+                let res = enemy.takeDamage(Math.round((1 - t) * dmg.min + t * dmg.max))
                 levelsClone[state.activeLevel].setInfoTiles(tile, enemy.getInfo())
                 if (res['bounty']) {
                     if (res['bounty'] !== 'win') {
@@ -128,9 +152,8 @@ function interactWithTile(tile, state) {
                                 position: {
                                     x: tile.x,
                                     y: tile.y
-                                },
-                                xp: state.hero.xp + res['bounty']
-                            })
+                                }
+                            }, addXP (state.hero, res['bounty']))
                         }, {
                             levels: Object.assign({}, state.levels, levelsClone),
                             hud: Object.assign({}, state.hud, {
@@ -161,6 +184,8 @@ function interactWithTile(tile, state) {
     }
 
 }
+
+
 
 export const game = combineReducers({
     camera,
