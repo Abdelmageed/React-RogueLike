@@ -169,11 +169,20 @@ class Level {
         let enemy /*go*/ = new Enemy (enemies[enemyLevel])
         if (enemyLevel !== 'boss') {
             let position = this.getRandomWalkablePosition ()
-            let tile = this.tiles[position.y*this.cols + position.x]
-            tile.type = TileType.ENEMY
-            this.setInfoTiles (tile, enemy.getInfo ())
-            this.enemies[`${position.x} ${position.y}`] = enemy
+            this.setEnemyTile (position, enemy)
+        } else {
+            let positions = this.getBossTiles ()
+            console.log (positions)
+            positions.forEach ((position) => {
+                this.setEnemyTile (position, enemy) 
+            })
         }
+    }
+    setEnemyTile = (position, enemy) => {
+        let tile = this.tiles[position.y*this.cols + position.x]
+        tile.type = TileType.ENEMY
+        this.setInfoTiles (tile, enemy.getInfo ())
+        this.enemies[`${position.x} ${position.y}`] = enemy
     }
     setEnemies = (enemyLevel, count) => {
         for (let i = 0; i < count; i++) {
@@ -311,6 +320,32 @@ class Level {
         let rand = Math.round(Math.random() * this.roomWalkablePositions.length)
         return this.roomWalkablePositions.splice (rand, 1)[0]
     }
+    //pick a random position from a collection positions such that position has 3 free positions on the right, bottom, and bottom right
+    getBossTiles = () => {
+        let bossPositions = this.roomWalkablePositions
+        .filter ((p) => {
+            let tiles = [{x:p.x + 1, y: p.y},
+                         {x: p.x + 1, y: p.y + 1},
+                         {x:p.x, y: p.y + 1}],
+                allFree = true
+            for (let i = 0; i < 3; i++) {
+                let tile = this.tiles[tiles[i].y*this.cols + tiles[i].x]
+                if (!tile || tile.type !== TileType.WALKABLE) {
+                    allFree = false
+                    break
+                }
+            }
+            return (allFree)
+        })
+        .map ((p) => [
+            {x: p.x, y: p.y},
+            {x:p.x + 1, y: p.y},
+            {x: p.x + 1, y: p.y + 1},
+            {x:p.x, y: p.y + 1}
+        ]),
+            rand = parseInt(Math.random () * bossPositions.length, 10)
+            return bossPositions[rand]
+    } 
     getPositionFromId = (id) => {
         let idSplit = id.split (' ')
         return {x: parseInt(idSplit[0], 10), y: parseInt(idSplit[1], 10)}
@@ -461,6 +496,7 @@ export const init = () => {
         y: 8
     }])
     levels[2].init()
+    levels[2].setEnemy ('boss')
     levels[2].setHealthPickups(10)
     levels[2].setReturnPortal()
     return levels
