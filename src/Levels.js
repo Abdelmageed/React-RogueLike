@@ -172,7 +172,6 @@ class Level {
             this.setEnemyTile (position, enemy)
         } else {
             let positions = this.getBossTiles ()
-            console.log (positions)
             positions.forEach ((position) => {
                 this.setEnemyTile (position, enemy) 
             })
@@ -344,6 +343,13 @@ class Level {
             {x:p.x, y: p.y + 1}
         ]),
             rand = parseInt(Math.random () * bossPositions.length, 10)
+            this.roomWalkablePositions = this.roomWalkablePositions.filter ((p) => {
+                let unused = true
+                bossPositions[rand].forEach ((pos) => {
+                    if (pos.x === p.x && pos.y === p.y) { unused = false }
+                })
+                return unused
+            })
             return bossPositions[rand]
     } 
     getPositionFromId = (id) => {
@@ -385,6 +391,7 @@ export const init = () => {
         y: 23
     }])
     levels[0].init()
+    levels[0].setEnemy ('boss')
     levels[0].setHealthPickups(10)
     levels[0].setEnemies('level1', 10)
     levels[0].setWeapon('Dagger')

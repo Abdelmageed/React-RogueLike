@@ -3,7 +3,9 @@ import { HUD as HUDComp } from '../Components/HUD'
 
 const mapStateToProps = (state) => {
     return {
-        height: state.camera.top
+        camera: state.camera,
+        showInstructions: state.instructions.isShown,
+        hideInstructions: state.instructions.hide
     }
 }
 

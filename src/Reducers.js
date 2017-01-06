@@ -13,7 +13,7 @@ import {
 }
 from 'redux'
 import {
-    INTERACT, RESIZE, INITIALIZE
+    INTERACT, RESIZE, INITIALIZE, SHOW_INSTRUCTIONS, HIDE_INSTRUCTIONS
 }
 from './Actions.js'
 
@@ -62,6 +62,25 @@ function world(state = {}, action) {
     }
 }
 
+function instructions(state = {}, action) {
+    switch (action.type) {
+        case SHOW_INSTRUCTIONS:
+            {
+                console.log ('showing')
+                return Object.assign({}, state, {
+                    isShown: true
+                })
+            }
+        case HIDE_INSTRUCTIONS:
+            {
+                return Object.assign({}, state, {
+                    isShown: false
+                })
+            }
+        default:
+            return state
+    }
+}
 function interactWithTile(tile, state) {
     if (!tile) {
         return state
@@ -147,6 +166,9 @@ function interactWithTile(tile, state) {
                                 info: tile.info
                             })
                         })
+                    }
+                    else {
+                        return initialize ()
                     }
                 } else if (res['damage']) {
                     let health = state.hero.health - res['damage']
@@ -258,5 +280,6 @@ function initialize(state) {
 
 export const game = combineReducers({
     camera,
-    world
+    world,
+    instructions
 })

@@ -10,6 +10,7 @@ const MapComp = (props) => {
     
     const style = {
         width: (props.camera.width * props.camera.TILE_SIZE),
+//        width: '100%',
         height: (props.camera.height * props.camera.TILE_SIZE),
         top: (props.camera.top * props.camera.TILE_SIZE),
         position: 'relative'
