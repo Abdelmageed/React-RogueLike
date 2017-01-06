@@ -34,8 +34,6 @@ function camera(state = {
     }
 }
 
-
-
 function world(state = {}, action) {
     switch (action.type) {
         case INTERACT:
@@ -137,13 +135,13 @@ function interactWithTile(tile, state) {
                     if (res['bounty'] !== 'win') {
                         levelsClone[state.activeLevel].destroyEnemy(enemyId)
                         return Object.assign({}, state, {
-                            hero: Object.assign({}, state.hero, {
+                            hero: Object.assign({}, state.hero, addXP(state.hero, res['bounty']),
+                            {
                                 position: {
                                     x: tile.x,
                                     y: tile.y
                                 }
-                            }, addXP(state.hero, res['bounty']))
-                        }, {
+                            }),                         }, {
                             levels: Object.assign({}, state.levels, levelsClone),
                             hud: Object.assign({}, state.hud, {
                                 info: tile.info
@@ -184,7 +182,10 @@ function interactWithTile(tile, state) {
                         weaponDamage: {
                             min: Math.round(state.hero.damage.min * weapon.dmgMod),
                             max: Math.round(state.hero.damage.max * weapon.dmgMod)
-
+                        },
+                        position: {
+                            x: tile.x,
+                            y: tile.y
                         }
                     })
                 }, {
