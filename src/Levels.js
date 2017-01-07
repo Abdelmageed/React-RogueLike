@@ -162,7 +162,7 @@ class Level {
             let pos = this.getRandomWalkablePosition ()
             let tile = this.tiles[pos.y*this.cols + pos.x]
             tile.type = TileType.HEALTH_PICKUP
-            this.setInfoTiles (tile, `Health + ${HEAL_AMOUNT}`)
+            this.setInfoTiles (tile, `Health + ${HEAL_AMOUNT}%`)
         }
     }
     setEnemy = (enemyLevel) => {
@@ -178,6 +178,8 @@ class Level {
         }
     }
     setEnemyTile = (position, enemy) => {
+        if (!this.tiles[position.y*this.cols + position.x])
+            console.log (position)
         let tile = this.tiles[position.y*this.cols + position.x]
         tile.type = TileType.ENEMY
         this.setInfoTiles (tile, enemy.getInfo ())
@@ -316,7 +318,7 @@ class Level {
             }
         ]})
     getRandomWalkablePosition = () => {
-        let rand = Math.round(Math.random() * this.roomWalkablePositions.length)
+        let rand = Math.floor(Math.random() * this.roomWalkablePositions.length)
         return this.roomWalkablePositions.splice (rand, 1)[0]
     }
     //pick a random position from a collection positions such that position has 3 free positions on the right, bottom, and bottom right
@@ -391,7 +393,6 @@ export const init = () => {
         y: 23
     }])
     levels[0].init()
-    levels[0].setEnemy ('boss')
     levels[0].setHealthPickups(10)
     levels[0].setEnemies('level1', 10)
     levels[0].setWeapon('Dagger')
@@ -444,6 +445,9 @@ export const init = () => {
         y: 20
     }])
     levels[1].init()
+    levels[1].setHealthPickups(10)
+    levels[1].setEnemies('level2', 10)
+    levels[1].setWeapon('ShortSword')
     levels[1].setReturnPortal()
     levels[1].setExitPortal()
 
@@ -505,6 +509,8 @@ export const init = () => {
     levels[2].init()
     levels[2].setEnemy ('boss')
     levels[2].setHealthPickups(10)
+    levels[2].setEnemies('level3', 10)
+    levels[2].setWeapon('LongSword')
     levels[2].setReturnPortal()
     return levels
 }

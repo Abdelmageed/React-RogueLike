@@ -13,7 +13,7 @@ import {
 }
 from 'redux'
 import {
-    INTERACT, RESIZE, INITIALIZE, SHOW_INSTRUCTIONS, HIDE_INSTRUCTIONS
+    INTERACT, RESIZE, INITIALIZE, SHOW_INSTRUCTIONS, HIDE_INSTRUCTIONS,
 }
 from './Actions.js'
 
@@ -132,7 +132,7 @@ function interactWithTile(tile, state) {
                             x: tile.x,
                             y: tile.y
                         },
-                        health: Math.min(state.hero.health + HEAL_AMOUNT,
+                        health: Math.min(state.hero.health + state.hero.maxHealth/HEAL_AMOUNT,
                             state.hero.maxHealth)
                     }),
                     levels: Object.assign({}, state.levels, levelsClone),

@@ -27,8 +27,8 @@ export const TileColors = {
 }
 export const getHeroStats = (level) => ({
     maxHealth: 100 + (50 * level),
-    damage: {min: 10 + (5 * level), max: 14 + (5 * level)},
-    xpToNext: 220 + (500 * level)
+    damage: {min: 10 + (5 * level), max: 12 + (5 * level)},
+    xpToNext: 450  * (level + 1)
 })
 //export function initializeHero () {
 //    let startPosition = {x: 0, y: 36}

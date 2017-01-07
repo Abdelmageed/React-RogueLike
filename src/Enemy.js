@@ -1,8 +1,8 @@
 export const enemies = {
-    level1: {hp: 50, damage:{min: 5, max: 8}, bounty: 50},
-    level2: {hp: 75, damage:{min: 10, max: 14}, bounty: 75},
-    level3: {hp: 100, damage:{min: 15, max: 19}, bounty: 100},
-    boss: {hp: 1, damage:{min: 8, max: 20}, bounty: 'win'}
+    level1: {hp: 35, damage:{min: 5, max: 8}, bounty: 50},
+    level2: {hp: 65, damage:{min: 10, max: 14}, bounty: 100},
+    level3: {hp: 95, damage:{min: 15, max: 19}, bounty: 150},
+    boss: {hp: 400, damage:{min: 20, max: 25}, bounty: 'win'}
 }
 export class Enemy {
     constructor (props) {

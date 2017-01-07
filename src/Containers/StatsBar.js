@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
         xp: state.world.hero.xp,
         damage: state.world.hero.weaponDamage,
         level: state.world.hero.level,
+        dungeon: state.world.activeLevel + 1,
         weapon: state.world.hero.weapon
     }
 }

@@ -13,7 +13,7 @@ export const HUD = (props) => {
                     <Modal.Title>Instructions</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Use the arrow keys or 'WASD' to move. Move against enemies to attack. Collect green health pickups and weapons. Kill the boss on the last level to win.
+                    Use the arrow keys or 'WASD' to move. Move against enemies to attack. Collect green health pickups and weapons. Kill the boss on the 3rd level to win.
                 </Modal.Body>
             </Modal>
             <h3 style={{textAlign:'center'}}>React Roguelike</h3>
