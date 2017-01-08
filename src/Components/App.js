@@ -3,6 +3,7 @@ import React, {
     Component
 }
 from 'react';
+import { Modal } from 'react-bootstrap'
 import logo from '../logo.svg';
 import disableScroll from '../ScrollDisable'
 import '../App.css';
@@ -14,7 +15,10 @@ class App extends Component {
 
     render() {
 
-        return ( < div > < HUD / > < Map / > < /div> );
+        return ( < div > 
+                < HUD / > 
+                < Map / > 
+                < /div> );
         }
 
     }

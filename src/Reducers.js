@@ -14,6 +14,7 @@ import {
 from 'redux'
 import {
     INTERACT, RESIZE, INITIALIZE, SHOW_INSTRUCTIONS, HIDE_INSTRUCTIONS,
+    HIDE_END_GAME
 }
 from './Actions.js'
 
@@ -54,6 +55,10 @@ function world(state = {}, action) {
             {
                 return initialize(state)
 
+            }
+        case HIDE_END_GAME:
+            {
+                return Object.assign ({}, state, {showEndGameModal: false})
             }
         default:
             {
@@ -168,12 +173,12 @@ function interactWithTile(tile, state) {
                         })
                     }
                     else {
-                        return initialize ()
+                        return initialize (state, 'WIN')
                     }
                 } else if (res['damage']) {
                     let health = state.hero.health - res['damage']
                     if (health <= 0){
-                        return initialize (state)
+                        return initialize (state, 'LOSE')
                     }
                     else { 
                     let currentTile = levelsClone[state.activeLevel]
@@ -247,34 +252,37 @@ function addXP(state, bounty) {
     }
 }
 
-function initialize(state) {
-    let level = 0,
-        levels = init ()
-    const heroStats = getHeroStats(level)
-    const hero = {
-        position: levels[level].startPosition,
-        health: heroStats.maxHealth,
-        maxHealth: heroStats.maxHealth,
-        damage: heroStats.damage,
-        xpToNext: heroStats.xpToNext,
-        weaponDamage: {
-            min: heroStats.damage.min,
-            max: heroStats.damage.max
-        },
-        xp: 0,
-        level: 0,
-        weapon: {
-            name: 'Fists',
-            dmgMod: 1
+function initialize(state, endGameStatus = 'FIRST_RUN') {
+    const levels = init(),
+        win = (endGameStatus === 'WIN'),
+        show = (endGameStatus !== 'FIRST_RUN'),
+        heroStats = getHeroStats(0),
+        hero = {
+            position: levels[0].startPosition,
+            health: heroStats.maxHealth,
+            maxHealth: heroStats.maxHealth,
+            damage: heroStats.damage,
+            xpToNext: heroStats.xpToNext,
+            weaponDamage: {
+                min: heroStats.damage.min,
+                max: heroStats.damage.max
+            },
+            xp: 0,
+            level: 0,
+            weapon: {
+                name: 'Fists',
+                dmgMod: 1
+            }
         }
-    }
     return Object.assign({}, state, {
         levels: levels,
         activeLevel: 0,
         hero: hero,
         hud: {
             tileInfo: ''
-        }
+        },
+        showEndGameModal: show,
+        win: win
     })
 }
 

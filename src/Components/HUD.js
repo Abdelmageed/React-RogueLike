@@ -2,6 +2,7 @@ import React from 'react'
 import { TileInfo } from '../Containers/TileInfo'
 import { StatsBar } from '../Containers/StatsBar'
 import { InstructionsButton } from '../Containers/InstructionsButton'
+import { EndGameModal } from '../Containers/EndGameModal'
 import { Modal } from 'react-bootstrap'
 export const HUD = (props) => {
     const style = {height:props.camera.top * props.camera.TILE_SIZE
@@ -16,6 +17,7 @@ export const HUD = (props) => {
                     Use the arrow keys or 'WASD' to move. Move against enemies to attack. Collect green health pickups and weapons. Kill the boss on the 3rd level to win.
                 </Modal.Body>
             </Modal>
+            <EndGameModal />
             <h3 style={{textAlign:'center'}}>React Roguelike</h3>
             <InstructionsButton />
             <StatsBar />
